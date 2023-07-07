@@ -14,11 +14,13 @@ function getData(){
     .then(response=>response.json())
         .then(data=>{
             logoAll=data;
+            shuffle(logoAll);
+            refresh(logoAll);
     });
-    console.log(logoAll);
 }
 
 function refresh(logos){
+    console.log(logos);
     const mainGrid = document.getElementById("main-grid");
     let logoRender = logos;
     mainGrid.innerHTML='';
@@ -139,8 +141,6 @@ function init(){
 }
 
 getData();
-shuffle(logoAll);
-refresh(logoAll);
 // clickAllNews();
 //clickMySubscribeNews();
 // clickGridImage();
