@@ -1,26 +1,31 @@
-import { data } from "./data.js";
 
-let logoAll = data.all_images;
-let logoSubscribe = data.subscribe_images;
+let logoAll=[];
+let logoSubscribe;
 let MAX_PAGE_NUMBER = 3;
 let MIN_PAGE_NUMBER = 0;
 let currentPageNumber = 0;
 const COUNT_PER_PAGE = 24;
-const allNews = document.getElementById("main-left-01");
-const subscribeNews = document.getElementById("main-left-02");
-const gridImage = document.getElementById("grid-image");
-const cardListImage = document.getElementById("card-list-image");
 const rightAsideButton = document.getElementById("aside-right");
 const leftAsideButton = document.getElementById("aside-left");
-const mainGrid = document.getElementById("main-grid");
+
+
+function getData(){
+    fetch("./article_data.json")
+    .then(response=>response.json())
+        .then(data=>{
+            logoAll=data;
+    });
+    console.log(logoAll);
+}
 
 function refresh(logos){
+    const mainGrid = document.getElementById("main-grid");
     let logoRender = logos;
     mainGrid.innerHTML='';
     for(let PAGE_INDEX = currentPageNumber * COUNT_PER_PAGE; PAGE_INDEX < COUNT_PER_PAGE * currentPageNumber + 24 ; PAGE_INDEX++){
         const outerDiv = document.createElement("div");
         const newsLogo = document.createElement("img");
-        newsLogo.src = `icons/light/${logoRender[PAGE_INDEX]}`;
+        newsLogo.src = `${logoAll[PAGE_INDEX].logo}`;
         outerDiv.append(newsLogo);
         mainGrid.append(outerDiv);
     }
@@ -60,30 +65,35 @@ function shuffle(array){
 }
 
 // function clickAllNews(){
+// const allNews = document.getElementById("main-left-01");
 //     allNews.addEventListener('click',()=>{
-//         refresh(subscribe_images);
+//         refresh(logoAll);
 //     });
 // }
 
 // function clickMySubscribeNews(){
+// const subscribeNews = document.getElementById("main-left-02");
 //     subscribeNews.addEventListener('click',()=>{
-//         refresh(subscribe_images);
+//         refresh(logoSubscribe);
 //     });
 // }
 
 // function clickGridImage(){
+// const gridImage = document.getElementById("grid-image");
 //     gridImage.addEventListener('click',()=>{ 
 //         refresh(subscribe_images);
 //     });
 // }
 
 // function clickCardListImage(){
+// const cardListImage = document.getElementById("card-list-image");     
 //     cardListImage.addEventListener('click',()=>{
 //         refresh(subscribe_images);
 //     });
 //}
 
 function clickRightAsideButton(){
+    const rightAsideButton = document.getElementById("aside-right");
     rightAsideButton.addEventListener("click",()=>{
         if (currentPageNumber == MAX_PAGE_NUMBER - 1){
             rightAsideButton.style.visibility = "hidden";
@@ -96,8 +106,18 @@ function clickRightAsideButton(){
         refresh(logoAll);
     });
 }
+//event target으로 받아서 visibility 처리하기
+
+function makeVisibilityHidden(){
+
+}
+
+function makeVisibilityHiddenVisible(){
+
+}
 
 function clickLeftAsideButton(){
+    const leftAsideButton = document.getElementById("aside-left");
     leftAsideButton.addEventListener("click",()=>{
         if (currentPageNumber == MIN_PAGE_NUMBER + 1){
             leftAsideButton.style.visibility = "hidden";
@@ -111,6 +131,14 @@ function clickLeftAsideButton(){
     });
 }
 
+function init(){
+    clickNewsStand();
+    clickRightAsideButton();
+    clickLeftAsideButton();
+    setDate();
+}
+
+getData();
 shuffle(logoAll);
 refresh(logoAll);
 // clickAllNews();
@@ -118,11 +146,5 @@ refresh(logoAll);
 // clickGridImage();
 // clickCardListImage();
 
-function init(){
-    clickNewsStand();
-    clickRightAsideButton();
-    clickLeftAsideButton();
-    setDate();
-}
 
 init();
