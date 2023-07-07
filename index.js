@@ -113,11 +113,16 @@ function clickLeftAsideButton(){
 
 shuffle(logoAll);
 refresh(logoAll);
-setDate();
-clickNewsStand();
 // clickAllNews();
 //clickMySubscribeNews();
 // clickGridImage();
 // clickCardListImage();
-clickRightAsideButton();
-clickLeftAsideButton();
+
+function init(){
+    clickNewsStand();
+    clickRightAsideButton();
+    clickLeftAsideButton();
+    setDate();
+}
+
+init();
