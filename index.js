@@ -1,3 +1,6 @@
+import data from "./data/grid_article.json" assert { type: "json"}
+import recentNews from "./recentNews.js";
+import refreshList from "./list_main.js";
 
 let logoAll=[];
 let logoSubscribe;
@@ -10,20 +13,17 @@ const leftAsideButton = document.getElementById("aside-left");
 
 
 function getData(){
-    fetch("./article_data.json")
-    .then(response=>response.json())
-        .then(data=>{
-            logoAll=data;
-            shuffle(logoAll);
-            refresh(logoAll);
-    });
+    logoAll=data;
+    shuffle(logoAll);
+    refreshGrid(logoAll);
 }
-
-function refresh(logos){
-    console.log(logos);
+            
+function refreshGrid(logos){
     const mainGrid = document.getElementById("main-grid");
     let logoRender = logos;
     mainGrid.innerHTML='';
+
+
     for(let PAGE_INDEX = currentPageNumber * COUNT_PER_PAGE; PAGE_INDEX < COUNT_PER_PAGE * currentPageNumber + 24 ; PAGE_INDEX++){
         const outerDiv = document.createElement("div");
         const newsLogo = document.createElement("img");
@@ -80,19 +80,19 @@ function shuffle(array){
 //     });
 // }
 
-// function clickGridImage(){
-// const gridImage = document.getElementById("grid-image");
-//     gridImage.addEventListener('click',()=>{ 
-//         refresh(subscribe_images);
-//     });
-// }
+function clickGridImage(){
+const gridImage = document.getElementById("grid-image");
+    gridImage.addEventListener('click',()=>{ 
+        refreshGrid();
+    });
+}
 
-// function clickCardListImage(){
-// const cardListImage = document.getElementById("card-list-image");     
-//     cardListImage.addEventListener('click',()=>{
-//         refresh(subscribe_images);
-//     });
-//}
+function clickCardListImage(){
+const cardListImage = document.getElementById("card-list-image");     
+    cardListImage.addEventListener('click',()=>{
+        refreshList();
+    });
+}
 
 function clickRightAsideButton(){
     const rightAsideButton = document.getElementById("aside-right");
@@ -138,6 +138,9 @@ function init(){
     clickRightAsideButton();
     clickLeftAsideButton();
     setDate();
+    recentNews();
+    clickGridImage();
+    clickCardListImage();
 }
 
 getData();
